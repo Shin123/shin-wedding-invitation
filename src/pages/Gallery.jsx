@@ -20,12 +20,6 @@ export default function Gallery() {
   const [selectedImage, setSelectedImage] = useState(null)
   const [currentIndex, setCurrentIndex] = useState(0)
   const { setIsModalOpen } = useContext(ModalContext)
-  const [hasAnimated, setHasAnimated] = useState(false)
-
-  // Set animation to run once on component mount
-  useEffect(() => {
-    setHasAnimated(true)
-  }, [])
 
   const openImage = (index) => {
     setSelectedImage(galleryImages[index])
