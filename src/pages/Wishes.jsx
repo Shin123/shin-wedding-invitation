@@ -18,7 +18,7 @@ import { useForm } from 'react-hook-form'
 
 export default function Wishes() {
   const SCRIPT_URL = import.meta.env.VITE_GOOGLE_APPS_SCRIPT_URL
-
+  console.log(SCRIPT_URL, 'SCRIPT_URL')
   const [showConfetti, setShowConfetti] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [, setIsLoading] = useState(false)
