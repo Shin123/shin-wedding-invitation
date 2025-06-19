@@ -1,152 +1,152 @@
-import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Music, PauseCircle, PlayCircle } from 'lucide-react';
-import config from '@/config/config';
-import BottomBar from '@/components/BottomBar';
+import config from '@/config/config'
+import { AnimatePresence, motion } from 'framer-motion'
+import { Music, PauseCircle, PlayCircle } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
 
+// eslint-disable-next-line react/prop-types
 const Layout = ({ children }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [showToast, setShowToast] = useState(false);
-  const audioRef = useRef(null);
-  const wasPlayingRef = useRef(false);
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [showToast, setShowToast] = useState(false)
+  const audioRef = useRef(null)
+  const wasPlayingRef = useRef(false)
 
   // First useEffect to handle initial setup and auto-play attempt
   useEffect(() => {
     // Create audio element
-    audioRef.current = new Audio(config.data.audio.src);
-    audioRef.current.loop = config.data.audio.loop;
+    audioRef.current = new Audio(config.data.audio.src)
+    audioRef.current.loop = config.data.audio.loop
 
     // Try to autoplay
     const attemptAutoplay = async () => {
       try {
-        await audioRef.current.play();
-        setIsPlaying(true);
-        wasPlayingRef.current = true;
-        setShowToast(true);
-        setTimeout(() => setShowToast(false), 3000);
+        await audioRef.current.play()
+        setIsPlaying(true)
+        wasPlayingRef.current = true
+        setShowToast(true)
+        setTimeout(() => setShowToast(false), 3000)
       } catch (error) {
-        console.log('Autoplay failed, waiting for user interaction');
+        console.log('Autoplay failed, waiting for user interaction', error)
         // Add click event listener for first interaction
         const handleFirstInteraction = async () => {
           try {
-            await audioRef.current.play();
-            setIsPlaying(true);
-            wasPlayingRef.current = true;
-            setShowToast(true);
-            setTimeout(() => setShowToast(false), 3000);
-            document.removeEventListener('click', handleFirstInteraction);
+            await audioRef.current.play()
+            setIsPlaying(true)
+            wasPlayingRef.current = true
+            setShowToast(true)
+            setTimeout(() => setShowToast(false), 3000)
+            document.removeEventListener('click', handleFirstInteraction)
           } catch (err) {
-            console.error('Playback failed after interaction:', err);
+            console.error('Playback failed after interaction:', err)
           }
-        };
-        document.addEventListener('click', handleFirstInteraction);
+        }
+        document.addEventListener('click', handleFirstInteraction)
       }
-    };
+    }
 
-    attemptAutoplay();
+    attemptAutoplay()
 
     return () => {
       if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current = null;
+        audioRef.current.pause()
+        audioRef.current = null
       }
-    };
-  }, []);
+    }
+  }, [])
 
   // Second useEffect to handle visibility and focus changes
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.hidden) {
-        wasPlayingRef.current = isPlaying;
+        wasPlayingRef.current = isPlaying
         if (audioRef.current && isPlaying) {
-          audioRef.current.pause();
-          setIsPlaying(false);
+          audioRef.current.pause()
+          setIsPlaying(false)
         }
       } else {
         if (audioRef.current && wasPlayingRef.current) {
-          audioRef.current.play().catch(console.error);
-          setIsPlaying(true);
+          audioRef.current.play().catch(console.error)
+          setIsPlaying(true)
         }
       }
-    };
+    }
 
     const handleWindowBlur = () => {
-      wasPlayingRef.current = isPlaying;
+      wasPlayingRef.current = isPlaying
       if (audioRef.current && isPlaying) {
-        audioRef.current.pause();
-        setIsPlaying(false);
+        audioRef.current.pause()
+        setIsPlaying(false)
       }
-    };
+    }
 
     const handleWindowFocus = () => {
       if (audioRef.current && wasPlayingRef.current) {
-        audioRef.current.play().catch(console.error);
-        setIsPlaying(true);
+        audioRef.current.play().catch(console.error)
+        setIsPlaying(true)
       }
-    };
+    }
 
     // Audio event listeners
     const handlePlay = () => {
-      setIsPlaying(true);
-      setShowToast(true);
-      setTimeout(() => setShowToast(false), config.audio.toastDuration);
-    };
-
-    const handlePause = () => {
-      setIsPlaying(false);
-      setShowToast(false);
-    };
-
-    if (audioRef.current) {
-      audioRef.current.addEventListener('play', handlePlay);
-      audioRef.current.addEventListener('pause', handlePause);
+      setIsPlaying(true)
+      setShowToast(true)
+      setTimeout(() => setShowToast(false), config.audio.toastDuration)
     }
 
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    window.addEventListener('blur', handleWindowBlur);
-    window.addEventListener('focus', handleWindowFocus);
+    const handlePause = () => {
+      setIsPlaying(false)
+      setShowToast(false)
+    }
+
+    if (audioRef.current) {
+      audioRef.current.addEventListener('play', handlePlay)
+      audioRef.current.addEventListener('pause', handlePause)
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    window.addEventListener('blur', handleWindowBlur)
+    window.addEventListener('focus', handleWindowFocus)
 
     return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-      window.removeEventListener('blur', handleWindowBlur);
-      window.removeEventListener('focus', handleWindowFocus);
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+      window.removeEventListener('blur', handleWindowBlur)
+      window.removeEventListener('focus', handleWindowFocus)
 
       if (audioRef.current) {
-        audioRef.current.removeEventListener('play', handlePlay);
-        audioRef.current.removeEventListener('pause', handlePause);
+        audioRef.current.removeEventListener('play', handlePlay)
+        audioRef.current.removeEventListener('pause', handlePause)
       }
-    };
-  }, [isPlaying]);
+    }
+  }, [isPlaying])
 
   // Toggle music function
   const toggleMusic = async () => {
     if (audioRef.current) {
       try {
         if (isPlaying) {
-          audioRef.current.pause();
-          wasPlayingRef.current = false;
+          audioRef.current.pause()
+          wasPlayingRef.current = false
         } else {
-          await audioRef.current.play();
-          wasPlayingRef.current = true;
+          await audioRef.current.play()
+          wasPlayingRef.current = true
         }
       } catch (error) {
-        console.error('Playback error:', error);
+        console.error('Playback error:', error)
       }
     }
-  };
+  }
 
   // Handle page unload
   useEffect(() => {
     const handleBeforeUnload = () => {
       if (audioRef.current) {
-        audioRef.current.pause();
-        setIsPlaying(false);
+        audioRef.current.pause()
+        setIsPlaying(false)
       }
-    };
+    }
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
-  }, []);
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload)
+  }, [])
 
   return (
     <div className="relative min-h-screen w-full bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
@@ -175,10 +175,8 @@ const Layout = ({ children }) => {
           )}
         </motion.button>
 
-        <main className="relative h-full w-full pb-[100px]">
-          {children}
-        </main>
-        <BottomBar />
+        <main className="relative h-full w-full pb-[100px]">{children}</main>
+        {/* <BottomBar /> */}
         {/* Music Info Toast */}
         <AnimatePresence>
           {showToast && (
@@ -200,7 +198,7 @@ const Layout = ({ children }) => {
         </AnimatePresence>
       </motion.div>
     </div>
-  );
-};
+  )
+}
 
-export default Layout;
+export default Layout
