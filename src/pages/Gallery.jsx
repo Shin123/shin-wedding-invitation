@@ -4,21 +4,28 @@ import { useState, useContext, useEffect } from 'react'
 import { ModalContext } from '@/App'
 import { useCallback } from 'react'
 
+const galleryImages = [
+  '/images/gallery-image-12.jpg',
+  '/images/gallery-image-6.jpg',
+  '/images/gallery-image-4.jpg',
+  '/images/gallery-image-1.jpg',
+  '/images/gallery-image-3.jpg',
+  '/images/gallery-image-9.jpg',
+  '/images/gallery-image-10.jpg',
+  '/images/gallery-image-8.jpg',
+  '/images/gallery-image-7.jpg',
+]
+
 export default function Gallery() {
-  const galleryImages = [
-    '/images/gallery-image-12.jpg',
-    '/images/gallery-image-6.jpg',
-    '/images/gallery-image-4.jpg',
-    '/images/gallery-image-1.jpg',
-    '/images/gallery-image-3.jpg',
-    '/images/gallery-image-9.jpg',
-    '/images/gallery-image-10.jpg',
-    '/images/gallery-image-8.jpg',
-    '/images/gallery-image-7.jpg',
-  ]
   const [selectedImage, setSelectedImage] = useState(null)
   const [currentIndex, setCurrentIndex] = useState(0)
   const { setIsModalOpen } = useContext(ModalContext)
+  const [hasAnimated, setHasAnimated] = useState(false)
+
+  // Set animation to run once on component mount
+  useEffect(() => {
+    setHasAnimated(true)
+  }, [])
 
   const openImage = (index) => {
     setSelectedImage(galleryImages[index])
@@ -35,14 +42,14 @@ export default function Gallery() {
     const nextIndex = (currentIndex + 1) % galleryImages.length
     setSelectedImage(galleryImages[nextIndex])
     setCurrentIndex(nextIndex)
-  }, [currentIndex, galleryImages])
+  }, [currentIndex])
 
   const goToPrev = useCallback(() => {
     const prevIndex =
       (currentIndex - 1 + galleryImages.length) % galleryImages.length
     setSelectedImage(galleryImages[prevIndex])
     setCurrentIndex(prevIndex)
-  }, [currentIndex, galleryImages])
+  }, [currentIndex])
 
   // Add keyboard event listener for ESC key
   useEffect(() => {
@@ -96,6 +103,17 @@ export default function Gallery() {
           >
             Gallery
           </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+            className="text-gray-500 max-w-md mx-auto"
+          >
+            Một vài khoảnh khắc tụi mình muốn lưu giữ… và chia sẻ cùng bạn. Cảm
+            ơn vì đã là một phần trong hành trình yêu thương này.
+          </motion.p>
 
           {/* Decorative Divider */}
           <motion.div

@@ -147,7 +147,16 @@ export default function Wishes() {
             >
               Wishes
             </motion.h2>
-
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+              className="text-gray-500 max-w-md mx-auto"
+            >
+              Những lời chúc của bạn là món quà tinh thần vô giá trong ngày đặc
+              biệt này. Chúc đi, ngại chi!
+            </motion.p>
             {/* Decorative Divider */}
             <motion.div
               initial={{ scale: 0 }}
@@ -167,7 +176,7 @@ export default function Wishes() {
               <Marquee
                 speed={20}
                 gradient={false}
-                className="[--duration:5s] py-2"
+                className="[--duration:30s] py-2"
               >
                 {wishes.map((wish, index) => (
                   <motion.div
@@ -182,7 +191,7 @@ export default function Wishes() {
                     <div className="absolute inset-0 bg-gradient-to-r from-rose-100/50 to-pink-100/50 rounded-xl transform transition-transform group-hover:scale-[1.02] duration-300" />
 
                     {/* Card content */}
-                    <div className="relative backdrop-blur-sm bg-white/80 p-4 rounded-xl border border-rose-100/50 shadow-md">
+                    <div className="relative backdrop-blur-sm bg-white/80 p-4 rounded-xl border border-rose-100/50 shadow-md h-full">
                       {/* Header */}
                       <div className="flex items-start space-x-3 mb-2">
                         {/* Avatar */}

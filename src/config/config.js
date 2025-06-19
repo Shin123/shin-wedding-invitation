@@ -55,7 +55,7 @@ const config = {
     ],
     audio: {
       src: '/audio/audio-extractor.mp3', // or /audio/nature-sound.mp3
-      title: 'Nhac khong loi', // or Nature Sound
+      title: 'Golden hour', // or Nature Sound
       autoplay: true,
       loop: true,
     },
