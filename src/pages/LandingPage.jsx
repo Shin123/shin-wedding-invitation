@@ -52,7 +52,7 @@ const LandingPage = ({ onOpenInvitation }) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="min-h-screen relative overflow-hidden"
+      className="min-h-screen relative overflow-hidden max-w-[430px] mx-auto"
     >
       {/* Decorative Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-white via-rose-50/30 to-white" />
@@ -62,7 +62,7 @@ const LandingPage = ({ onOpenInvitation }) => {
       {/* Main Content */}
 
       <motion.div
-        className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 bg-cover bg-center bg-[url('/images/cover-landing-bg.jpg')]"
+        className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 bg-cover bg-center bg-[url('/images/cover-landing-bg.jpg')] max-w-screen-xl"
         // style={{ backgroundImage: `url(${currentBg})` }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
