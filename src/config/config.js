@@ -11,7 +11,7 @@ const config = {
     parentBride: 'Quang Dũng & Thu Thảo',
     date: '2025-07-20',
     time: '11:00',
-    location: 'Hôn lễ được tổ tại Tư Gia',
+    location: 'Hôn lễ được tổ chức tại Tư Gia',
     address: '',
     ogImage: '/images/og-image.jpg',
     favicon: '/images/favicon.ico',
