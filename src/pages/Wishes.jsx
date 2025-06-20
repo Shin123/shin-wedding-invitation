@@ -1,3 +1,4 @@
+import Modal from '@/components/Modal'
 import Marquee from '@/components/ui/marquee'
 import { formatEventDate } from '@/lib/formatEventDate'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -10,6 +11,7 @@ import {
   MessageCircle,
   Send,
   User,
+  X,
   XCircle,
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -23,6 +25,7 @@ export default function Wishes() {
   const [, setIsLoading] = useState(false)
   const [attendance, setAttendance] = useState('')
   const [isOpen, setIsOpen] = useState(false)
+  const [showNotiModal, setShowNotiModal] = useState(false)
 
   const { register, handleSubmit, reset } = useForm({
     defaultValues: {
@@ -58,6 +61,11 @@ export default function Wishes() {
   }
 
   const onSubmit = async (value) => {
+    if (!attendance) {
+      setShowNotiModal(true)
+      return
+    }
+
     try {
       setIsSubmitting(true)
       const body = {
@@ -366,6 +374,26 @@ export default function Wishes() {
             </form>
           </motion.div>
         </div>
+
+        <Modal isOpen={showNotiModal} onClose={() => setShowNotiModal(false)}>
+          <div className="space-y-6 ">
+            <div className="flex justify-between  items-center">
+              <h4 className="text-xl text-gray-800">
+                Vui lòng xác nhận tham gia!
+              </h4>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => setShowNotiModal(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <X className="w-5 h-5" />
+              </motion.button>
+            </div>
+
+            <div className="space-y-3"></div>
+          </div>
+        </Modal>
       </section>
     </>
   )
