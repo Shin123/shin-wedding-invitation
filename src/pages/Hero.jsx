@@ -149,7 +149,7 @@ export default function Hero() {
                       <span className="text-rose-500">
                         <Heart className="w-4 h-4" fill="currentColor" />
                       </span>
-                      Lễ thành hôn
+                      Lễ Thành Hôn
                       <span className="text-rose-500">
                         <Heart className="w-4 h-4" fill="currentColor" />
                       </span>
